@@ -17,6 +17,15 @@ let unlockClass = "fa-lock-open";
 
 let ticketArr = [];
 
+//if localstorage has tickets display them first
+if(localStorage.getItem("jira-tickets")){
+    ticketArr = JSON.parse(localStorage.getItem("jira-tickets"));
+
+    ticketArr.forEach((ticketObj) => {
+        createTicket(ticketObj.ticketColor, ticketObj.ticketTask, ticketObj.ticketId);
+    })
+}
+
 //filtering
 for(let i = 0; i < toolBoxColors.length; i++){
     toolBoxColors[i].addEventListener("click", (e) => {
@@ -107,17 +116,25 @@ function createTicket(ticketColor, ticketTask, ticketId){
         localStorage.setItem("jira-tickets", JSON.stringify(ticketArr));
     }
 
-    handleRemoval(ticket);
+    handleRemoval(ticket, id);
     handleLock(ticket, id);
     handleColor(ticket, id);
 }
 
 //remove ticket
 //removeFlag = true then remove
-function handleRemoval(ticket){
-    if(removeFlag){
-        ticket.remove();
-    }
+function handleRemoval(ticket, id){
+    ticket.addEventListener("click", (e) => {
+
+        if(!removeFlag) return;
+
+        let ticketIdx = getTicketIdx(id);
+        ticketArr.splice(ticketIdx, 1);
+        localStorage.setItem("jira-tickets", JSON.stringify(ticketArr)); //db removal
+
+        ticket.remove(); //ui removal
+
+    })
 }
 
 //handle lock 
