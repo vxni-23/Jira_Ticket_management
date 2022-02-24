@@ -86,7 +86,12 @@ addBtn.addEventListener("click", (e) => {
 
 //toggle remove ticket button
 removeBtn.addEventListener("click", (e) => {
-    removeFlag = !removeFlag
+    removeFlag = !removeFlag;
+    if(removeFlag){
+        removeBtn.style.backgroundColor = "#7f8c8d";
+    }else{
+        removeBtn.style.backgroundColor = "#636e72";
+    }
 })
 
 //create ticket on shift press
